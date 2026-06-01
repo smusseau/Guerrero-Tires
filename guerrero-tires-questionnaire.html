@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guerrero Tires — Business Discovery</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --surface: #161616;
+    --card: #1c1c1c;
+    --border: #2a2a2a;
+    --accent: #e8401c;
+    --accent2: #f5a623;
+    --text: #f0ede8;
+    --muted: #7a7570;
+    --success: #3ddc84;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .shell {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* Header */
+  .header {
+    margin-bottom: 56px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .header-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(42px, 8vw, 72px);
+    font-weight: 800;
+    line-height: 0.92;
+    text-transform: uppercase;
+    color: #4a4a4a;
+    letter-spacing: -0.01em;
+  }
+
+  .header h1 span {
+    color: var(--accent);
+  }
+
+  .header-sub {
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 520px;
+  }
+
+  .progress-bar-wrap {
+    margin-top: 28px;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 0%;
+  }
+
+  .progress-label {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.1em;
+  }
+
+  /* Contact form */
+  .contact-form {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 32px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.1s forwards;
+  }
+
+  .contact-form-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .contact-form-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .contact-grid .full-width {
+    grid-column: 1 / -1;
+  }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .field-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .field-label .req {
+    color: var(--accent);
+    margin-left: 2px;
+  }
+
+  .field-input {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 11px 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+    width: 100%;
+  }
+
+  .field-input::placeholder { color: #3a3937; }
+
+  .field-input:focus {
+    border-color: var(--accent);
+  }
+
+  .field-input.error {
+    border-color: var(--accent);
+    background: rgba(232, 64, 28, 0.05);
+  }
+
+  .field-error {
+    font-size: 11px;
+    color: var(--accent);
+    display: none;
+  }
+
+  .field-error.visible { display: block; }
+
+  .opt-in-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .opt-in-check {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    accent-color: var(--accent);
+    margin-top: 2px;
+    cursor: pointer;
+  }
+
+  .opt-in-text {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .opt-in-text strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .divider-line {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 0 8px;
+  }
+
+  /* Additional contacts */
+  .contacts-section {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .contacts-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .contacts-section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .add-contact-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--accent2);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .add-contact-btn:hover {
+    border-color: var(--accent2);
+    background: rgba(245, 166, 35, 0.08);
+  }
+
+  .add-contact-btn .plus-icon {
+    font-size: 16px;
+    line-height: 1;
+    margin-top: -1px;
+  }
+
+  .extra-contact {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 12px;
+    animation: fadeUp 0.3s ease forwards;
+    position: relative;
+  }
+
+  .extra-contact-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .extra-contact-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent2);
+  }
+
+  .remove-contact-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 6px;
+    border-radius: 3px;
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+
+  .remove-contact-btn:hover {
+    color: var(--accent);
+    background: rgba(232, 64, 28, 0.1);
+  }
+
+  /* Section headers */
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 20px;
+    margin-top: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Question card */
+  .q-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 28px;
+    margin-bottom: 16px;
+    transition: border-color 0.25s ease;
+    opacity: 0;
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .q-card:hover {
+    border-color: #3a3a3a;
+  }
+
+  .q-card.answered {
+    border-color: rgba(232, 64, 28, 0.3);
+  }
+
+  /* Conditional reveal panel */
+  .conditional-panel {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .conditional-panel.revealed {
+    max-height: 900px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .conditional-hint {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: rgba(245, 166, 35, 0.07);
+    border: 1px dashed rgba(245, 166, 35, 0.3);
+    border-radius: 5px;
+    margin-bottom: 16px;
+    font-size: 12px;
+    color: var(--accent2);
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .conditional-hint .hint-icon { font-size: 14px; }
+
+  /* Service breakdown section */
+  .service-breakdown-wrap {
+    margin-top: 48px;
+  }
+
+  .service-breakdown-gate {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 28px;
+    margin-bottom: 0;
+  }
+
+  .service-breakdown-panel {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+    pointer-events: none;
+  }
+
+  .service-breakdown-panel.revealed {
+    max-height: 2400px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .service-breakdown-intro {
+    padding: 20px 0 4px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .service-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 22px;
+    margin-top: 14px;
+    transition: border-color 0.25s ease;
+  }
+
+  .service-card.has-data {
+    border-color: rgba(245, 166, 35, 0.35);
+  }
+
+  .service-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .service-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    background: rgba(232, 64, 28, 0.12);
+    border: 1px solid rgba(232, 64, 28, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .service-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text);
+  }
+
+  .service-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .service-field-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .service-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .service-chip {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Barlow', sans-serif;
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .service-chip:hover {
+    border-color: var(--accent2);
+    color: var(--text);
+  }
+
+  .service-chip.selected {
+    border-color: var(--accent2);
+    background: rgba(245, 166, 35, 0.12);
+    color: var(--accent2);
+  }
+
+  .service-avg-select {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    padding: 8px 12px;
+    outline: none;
+    width: 100%;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7570' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+  }
+
+  .service-avg-select:focus {
+    border-color: var(--accent2);
+  }
+
+  .service-avg-select option {
+    background: #1c1c1c;
+    color: var(--text);
+  }
+
+  @media (max-width: 520px) {
+    .service-row { grid-template-columns: 1fr; }
+  }
+
+  .q-number {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .q-text {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  /* Multiple choice */
+  .choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .choice-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .choice-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .choice-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  .choice-btn.selected {
+    border-color: var(--accent);
+    color: var(--text);
+    background: rgba(232, 64, 28, 0.15);
+  }
+
+  .choice-btn span {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Text area */
+  .notes-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .notes-input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 12px 14px;
+    resize: vertical;
+    min-height: 72px;
+    transition: border-color 0.2s ease;
+    outline: none;
+  }
+
+  .notes-input::placeholder { color: #3a3937; }
+
+  .notes-input:focus {
+    border-color: var(--accent);
+  }
+
+  /* Submit */
+  .submit-wrap {
+    margin-top: 48px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.3s forwards;
+  }
+
+  .submit-btn {
+    background: var(--accent);
+    border: none;
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 16px 40px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .submit-btn:hover {
+    background: #c93214;
+    transform: translateY(-1px);
+  }
+
+  .submit-btn:active {
+    transform: translateY(0);
+  }
+
+  .reset-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 16px 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .reset-btn:hover {
+    border-color: var(--muted);
+    color: var(--text);
+  }
+
+  /* Summary panel */
+  .summary-panel {
+    display: none;
+    background: var(--card);
+    border: 1px solid rgba(61, 220, 132, 0.3);
+    border-radius: 6px;
+    padding: 36px;
+    margin-top: 48px;
+  }
+
+  .summary-panel.visible {
+    display: block;
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .summary-panel h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--success);
+    margin-bottom: 8px;
+  }
+
+  .summary-panel p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+
+  .summary-item {
+    border-top: 1px solid var(--border);
+    padding: 16px 0;
+  }
+
+  .summary-q {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .summary-choice {
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 500;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .summary-notes {
+    font-size: 13px;
+    color: var(--text);
+    margin-top: 4px;
+    line-height: 1.5;
+    opacity: 0.8;
+  }
+
+  .copy-btn {
+    margin-top: 24px;
+    background: transparent;
+    border: 1px solid var(--success);
+    color: var(--success);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 12px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .copy-btn:hover {
+    background: rgba(61, 220, 132, 0.1);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Stagger cards */
+  .q-card:nth-child(1)  { animation-delay: 0.05s; }
+  .q-card:nth-child(2)  { animation-delay: 0.10s; }
+  .q-card:nth-child(3)  { animation-delay: 0.15s; }
+  .q-card:nth-child(4)  { animation-delay: 0.20s; }
+  .q-card:nth-child(5)  { animation-delay: 0.25s; }
+  .q-card:nth-child(6)  { animation-delay: 0.30s; }
+  .q-card:nth-child(7)  { animation-delay: 0.35s; }
+
+  @media (max-width: 520px) {
+    .choices { flex-direction: column; }
+    .choice-btn { width: 100%; text-align: left; }
+  }
+
+  /* iPad touch optimizations */
+  @media (pointer: coarse) {
+    .choice-btn { padding: 12px 18px; min-height: 44px; }
+    .submit-btn, .reset-btn, .copy-btn, .pdf-btn { min-height: 48px; }
+    .service-chip { padding: 8px 14px; min-height: 40px; }
+    .field-input, .notes-input { font-size: 16px; } /* prevents iOS zoom */
+  }
+
+  /* PDF export button */
+  .pdf-btn {
+    background: transparent;
+    border: 1px solid var(--accent2);
+    color: var(--accent2);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 12px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 24px;
+    margin-left: 12px;
+  }
+  .pdf-btn:hover { background: rgba(245, 166, 35, 0.1); }
+
+  /* ── Print / PDF styles ── */
+  @media print {
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+    body {
+      background: #ffffff !important;
+      color: #1a1a1a !important;
+      font-family: 'Barlow', Georgia, serif;
+    }
+
+    body::before { display: none; }
+
+    .shell { max-width: 100%; padding: 0; }
+
+    /* Hide everything except the print block */
+    .header, .contact-form, hr.divider-line,
+    .service-breakdown-wrap, #questionnaire,
+    .submit-wrap, .summary-panel > h2,
+    .summary-panel > p, .copy-btn, .pdf-btn { display: none !important; }
+
+    .summary-panel {
+      display: block !important;
+      background: #fff !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      animation: none !important;
+    }
+
+    #printHeader { display: block !important; }
+    #summaryContent { display: block !important; }
+    #printServiceSection { display: block !important; }
+
+    .summary-item {
+      border-top: 1px solid #ddd !important;
+      padding: 10px 0 !important;
+      page-break-inside: avoid;
+    }
+
+    .summary-q { color: #666 !important; font-size: 11px !important; }
+    .summary-choice { color: #c0392b !important; font-size: 14px !important; }
+    .summary-notes { color: #333 !important; font-size: 12px !important; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="header">
+    <div class="header-eyebrow">MUSO VENTURES &mdash; Client Discovery</div>
+    <h1>Guerrero<br><span>Tires</span></h1>
+    <p class="header-sub">Answer each question and add any notes that help us understand your business. This takes about 5 minutes.</p>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+    <div class="progress-label" id="progressLabel">0 of 18 answered</div>
+  </div>
+
+  <!-- Contact Info Form -->
+  <div class="contact-form" id="contactForm">
+    <div class="contact-form-title">Your Contact Info</div>
+    <div class="contact-form-sub">Fill this out so we can follow up with the right people. Fields marked <span style="color:var(--accent)">*</span> are required.</div>
+
+    <div class="contact-grid">
+
+      <div class="field-group">
+        <label class="field-label">Business Name <span class="req">*</span></label>
+        <input class="field-input" id="cf_business" type="text" placeholder="e.g. Guerrero Tires">
+        <span class="field-error" id="err_business">Please enter the business name.</span>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Business Phone</label>
+        <input class="field-input" id="cf_phone" type="tel" placeholder="(555) 000-0000">
+      </div>
+
+      <div class="field-group full-width">
+        <label class="field-label">Business Email <span class="req">*</span></label>
+        <input class="field-input" id="cf_email" type="email" placeholder="you@yourbusiness.com">
+        <span class="field-error" id="err_email">Please enter a valid email address.</span>
+      </div>
+
+      <div class="field-group full-width">
+        <label class="field-label">Business Address / Location</label>
+        <input class="field-input" id="cf_address" type="text" placeholder="City, State or full address">
+      </div>
+
+      <div class="field-group full-width">
+        <label class="field-label">Website (if you have one)</label>
+        <input class="field-input" id="cf_website" type="url" placeholder="https://yourbusiness.com">
+      </div>
+
+    </div>
+
+    <!-- Primary + Secondary + Additional Contacts -->
+    <div class="contacts-section">
+      <div class="contacts-section-header">
+        <span class="contacts-section-label">Key Contacts</span>
+        <button class="add-contact-btn" onclick="addContact()">
+          <span class="plus-icon">+</span> Add Contact
+        </button>
+      </div>
+
+      <!-- Primary contact (always shown) -->
+      <div class="extra-contact" id="primary-contact">
+        <div class="extra-contact-header">
+          <span class="extra-contact-title">Primary Contact</span>
+        </div>
+        <div class="contact-grid">
+          <div class="field-group">
+            <label class="field-label">Full Name <span class="req">*</span></label>
+            <input class="field-input" id="cf_name" type="text" placeholder="First and last name">
+            <span class="field-error" id="err_name">Please enter a contact name.</span>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Role / Title <span class="req">*</span></label>
+            <input class="field-input" id="cf_role" type="text" placeholder="e.g. Owner, Manager">
+            <span class="field-error" id="err_role">Please enter a role or title.</span>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Direct Phone <span class="req">*</span></label>
+            <input class="field-input" id="cf_contact_phone" type="tel" placeholder="(555) 000-0000">
+            <span class="field-error" id="err_contact_phone">Please enter a phone number.</span>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Direct Email <span class="req">*</span></label>
+            <input class="field-input" id="cf_contact_email" type="email" placeholder="direct@yourbusiness.com">
+            <span class="field-error" id="err_contact_email">Please enter a valid email.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secondary contact (always shown) -->
+      <div class="extra-contact" id="secondary-contact">
+        <div class="extra-contact-header">
+          <span class="extra-contact-title">Secondary Contact</span>
+        </div>
+        <div class="contact-grid">
+          <div class="field-group">
+            <label class="field-label">Full Name <span class="req">*</span></label>
+            <input class="field-input" id="cf_name2" type="text" placeholder="First and last name">
+            <span class="field-error" id="err_name2">Please enter a contact name.</span>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Role / Title <span class="req">*</span></label>
+            <input class="field-input" id="cf_role2" type="text" placeholder="e.g. Office Manager, Partner">
+            <span class="field-error" id="err_role2">Please enter a role or title.</span>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Direct Phone <span class="req">*</span></label>
+            <input class="field-input" id="cf_contact_phone2" type="tel" placeholder="(555) 000-0000">
+            <span class="field-error" id="err_contact_phone2">Please enter a phone number.</span>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Direct Email <span class="req">*</span></label>
+            <input class="field-input" id="cf_contact_email2" type="email" placeholder="direct@yourbusiness.com">
+            <span class="field-error" id="err_contact_email2">Please enter a valid email.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dynamic additional contacts injected here -->
+      <div id="extra-contacts-list"></div>
+
+    </div>
+
+    <div class="opt-in-row">
+      <input class="opt-in-check" type="checkbox" id="cf_optin" checked>
+      <label class="opt-in-text" for="cf_optin">
+        <strong>Join the MUSO VENTURES contact list</strong> — get occasional tips on web, local marketing, and digital tools built for small businesses. No spam, unsubscribe anytime.
+      </label>
+    </div>
+  </div>
+
+  <hr class="divider-line">
+
+  <!-- Service Breakdown Section -->
+  <div class="service-breakdown-wrap">
+    <div class="section-label" style="margin-top:0;">Service Breakdown</div>
+
+    <div class="service-breakdown-gate q-card" style="animation-delay:0.05s;">
+      <div class="q-number">OPTIONAL</div>
+      <div class="q-text">Would you like to break down the services you offer and average ticket value per customer visit?</div>
+      <div class="choices">
+        <button class="choice-btn" onclick="toggleServiceBreakdown(this, true)"><span>Yes — let's break it down</span></button>
+        <button class="choice-btn" onclick="toggleServiceBreakdown(this, false)"><span>No — skip this section</span></button>
+      </div>
+
+      <div class="service-breakdown-panel" id="serviceBreakdownPanel">
+        <div class="service-breakdown-intro">
+          For each service you offer, select which job types fall under it and choose the average dollar amount per customer visit.
+        </div>
+
+        <!-- Used Tires -->
+        <div class="service-card" id="sc_used_tires">
+          <div class="service-card-header">
+            <div class="service-icon">🔄</div>
+            <div class="service-name">Used Tires</div>
+          </div>
+          <div class="service-row">
+            <div>
+              <div class="service-field-label">Common Job Types</div>
+              <div class="service-chips" data-service="used_tires" data-field="jobs">
+                <button class="service-chip" onclick="toggleChip(this)"><span>Single tire sale</span></button>
+                <button class="service-chip" onclick="toggleChip(this)"><span>Full set (4 tires)</span></button>
+                <button class="service-chip" onclick="toggleChip(this)"><span>Mounted &amp; balanced</span></button>
+                <button class="service-chip" onclick="toggleChip(this)"><span>Spare replacement</span></button>
+              </div>
+            </div>
+            <div>
+              <div class="service-field-label">Avg $ Per Visit</div>
+              <select class="service-avg-select" data-service="used_tires" data-field="avg" onchange="markServiceCard('sc_used_tires')">
+                <option value="">Select range...</option>
+                <option>Under $50</option>
+                <option>$50 – $100</option>
+                <option>$100 – $200</option>
+                <option>$200 – $400</option>
+                <option>$400+</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tire Repair -->
+        <div class="service-card" id="sc_tire_repair">
+          <div class="service-card-header">
+            <div class="service-icon">🔧</div>
+            <div class="service-name">Tire Repair</div>
+          </div>
+          <div class="service-row">
+            <div>
+              <div class="service-field-label">Common Job Types</div>
+              <div class="service-chips" data-service="tire_repair" data-field="jobs">
+                <button class="service-chip" onclick="toggleChip(this)"><span>Patch / plug</span></button>
+                <button class="service-chip" onclick="toggleChip(this)"><span>Valve stem replace</span></button>
+                <button class="service-chip" onclick="toggleChip(this)"><span>Bead seal</span></button>
+                <button class="service-chip" onclick="toggleChip(this)"><span>Sidewall inspection</span></button>
+              </div>
+            </div>
+            <div>
+              <div class="service-field-label">Avg $ Per Visit</div>
+              <select class="service-avg-select" data-service="tire_repair" data-field="avg" onchange="markServiceCard('sc_tire_repair')">
+                <option value="">Select range...</option>
+                <option>Under $25</option>
+                <option>$25 – $50</option>
+                <option>$50 – $100</option>
+                <option>$100 – $200</option>
+                <option>$200+</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alignment -->
+        <div class="service-card" id="sc_alignment">
+          <div class="service-card-header">
+            <div class="service-icon">📐</div>
+            <div class="service-name">Alignment</div>
+          </div>
+          <div class="service-row">
+            <div>
+              <div class="service-field-label">Common Job Types</div>
+              <div class="service-chips" data-service="alignment" data-field="jobs">
+                <button class="service-chip" onclick="toggleChip(this)"><span>Front-end only</span></button>
+                <button class="service-chip" onclick="toggleChip(this)"><span>4-wheel alignment</span></button>
+                <button class="service-chip" onclick="toggleChip(this)"><span>Post-suspension work</span></button>
+                <button class="service-chip" onclick="toggleChip(this)"><span>Fleet alignment</span></button>
+              </div>
+            </div>
+            <div>
+              <div class="service-field-label">Avg $ Per Visit</div>
+              <select class="service-avg-select" data-service="alignment" data-field="avg" onchange="markServiceCard('sc_alignment')">
+                <option value="">Select range...</option>
+                <option>Under $75</option>
+                <option>$75 – $100</option>
+                <option>$100 – $150</option>
+                <option>$150 – $250</option>
+                <option>$250+</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wheel Alignment -->
+        <div class="service-card" id="sc_wheel_alignment">
+          <div class="service-card-header">
+            <div class="service-icon">🎯</div>
+            <div class="service-name">Wheel Alignment</div>
+          </div>
+          <div class="service-row">
+            <div>
+              <div class="service-field-label">Common Job Types</div>
+              <div class="service-chips" data-service="wheel_alignment" data-field="jobs">
+                <button class="service-chip" onclick="toggleChip(this)"><span>Camber / caster / toe</span></button>
+                <button class="service-chip" onclick="toggleChip(this)"><span>Thrust angle</span></button>
+                <button class="service-chip" onclick="toggleChip(this)"><span>Steering reset</span></button>
+                <button class="service-chip" onclick="toggleChip(this)"><span>Combo w/ balance</span></button>
+              </div>
+            </div>
+            <div>
+              <div class="service-field-label">Avg $ Per Visit</div>
+              <select class="service-avg-select" data-service="wheel_alignment" data-field="avg" onchange="markServiceCard('sc_wheel_alignment')">
+                <option value="">Select range...</option>
+                <option>Under $100</option>
+                <option>$100 – $150</option>
+                <option>$150 – $200</option>
+                <option>$200 – $300</option>
+                <option>$300+</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 24 Hour Tire Repair -->
+        <div class="service-card" id="sc_24hr">
+          <div class="service-card-header">
+            <div class="service-icon">⏱</div>
+            <div class="service-name">24 Hour Tire Repair</div>
+          </div>
+          <div class="service-row">
+            <div>
+              <div class="service-field-label">Common Job Types</div>
+              <div class="service-chips" data-service="24hr" data-field="jobs">
+                <button class="service-chip" onclick="toggleChip(this)"><span>Emergency roadside</span></button>
+                <button class="service-chip" onclick="toggleChip(this)"><span>After-hours shop visit</span></button>
+                <button class="service-chip" onclick="toggleChip(this)"><span>Blowout repair</span></button>
+                <button class="service-chip" onclick="toggleChip(this)"><span>Fleet emergency</span></button>
+              </div>
+            </div>
+            <div>
+              <div class="service-field-label">Avg $ Per Visit</div>
+              <select class="service-avg-select" data-service="24hr" data-field="avg" onchange="markServiceCard('sc_24hr')">
+                <option value="">Select range...</option>
+                <option>Under $75</option>
+                <option>$75 – $150</option>
+                <option>$150 – $250</option>
+                <option>$250 – $400</option>
+                <option>$400+</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wheel Repair -->
+        <div class="service-card" id="sc_wheel_repair">
+          <div class="service-card-header">
+            <div class="service-icon">⚙️</div>
+            <div class="service-name">Wheel Repair</div>
+          </div>
+          <div class="service-row">
+            <div>
+              <div class="service-field-label">Common Job Types</div>
+              <div class="service-chips" data-service="wheel_repair" data-field="jobs">
+                <button class="service-chip" onclick="toggleChip(this)"><span>Rim straightening</span></button>
+                <button class="service-chip" onclick="toggleChip(this)"><span>Curb rash repair</span></button>
+                <button class="service-chip" onclick="toggleChip(this)"><span>Weld / crack repair</span></button>
+                <button class="service-chip" onclick="toggleChip(this)"><span>Refinish / repaint</span></button>
+              </div>
+            </div>
+            <div>
+              <div class="service-field-label">Avg $ Per Visit</div>
+              <select class="service-avg-select" data-service="wheel_repair" data-field="avg" onchange="markServiceCard('sc_wheel_repair')">
+                <option value="">Select range...</option>
+                <option>Under $75</option>
+                <option>$75 – $150</option>
+                <option>$150 – $300</option>
+                <option>$300 – $500</option>
+                <option>$500+</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end .service-breakdown-panel -->
+    </div><!-- end .service-breakdown-gate -->
+  </div><!-- end .service-breakdown-wrap -->
+
+  <div id="questionnaire"></div>
+
+  <div class="submit-wrap">
+    <button class="submit-btn" onclick="submitForm()">Submit Responses</button>
+    <button class="reset-btn" onclick="resetForm()">Start Over</button>
+  </div>
+
+  <div class="summary-panel" id="summaryPanel">
+    <!-- Print-only header (hidden on screen) -->
+    <div id="printHeader" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; padding-bottom:16px; border-bottom:2px solid #1a1a1a;">
+        <div>
+          <div style="font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:#888; margin-bottom:4px;">MUSO VENTURES — Client Discovery</div>
+          <div style="font-size:28px; font-weight:800; text-transform:uppercase; letter-spacing:-0.01em; color:#1a1a1a; line-height:1;">Guerrero Tires</div>
+          <div style="font-size:12px; color:#888; margin-top:4px;" id="printDate"></div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:10px; color:#888; text-transform:uppercase; letter-spacing:0.1em;">Prepared by</div>
+          <div style="font-size:13px; font-weight:600; color:#1a1a1a;">Shane Musseau</div>
+          <div style="font-size:11px; color:#888;">shane@musoventures.com</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Responses Captured</h2>
+    <p>Summary is ready. Export as PDF or copy to your pitch notes.</p>
+    <div id="summaryContent"></div>
+    <div id="printServiceSection" style="display:none;"></div>
+    <div style="display:flex; flex-wrap:wrap; gap:0; align-items:center;">
+      <button class="copy-btn" onclick="copyToClipboard()">Copy Summary</button>
+      <button class="pdf-btn" onclick="exportPDF()">Export PDF</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const sections = [
+  {
+    label: "About Their Business",
+    questions: [
+      {
+        text: "How long have you been operating, and how many locations do you have?",
+        choices: ["Under 2 years", "2–5 years", "5–10 years", "10+ years", "Multiple locations"]
+      },
+      {
+        text: "Who are your primary customers?",
+        choices: ["Walk-ins / retail", "Fleet accounts", "Commercial clients", "Mix of all three"]
+      },
+      {
+        text: "What does a typical week look like in terms of customer volume?",
+        choices: ["Very quiet (under 20 tickets)", "Moderate (20–50 tickets)", "Busy (50–100 tickets)", "Very high volume (100+)"]
+      }
+    ]
+  },
+  {
+    label: "Online Presence & Visibility",
+    questions: [
+      {
+        text: "Do you have a website currently? When was it last updated?",
+        choices: ["No website", "Yes — outdated (3+ years)", "Yes — somewhat current", "Yes — recently updated"]
+      },
+      {
+        text: "How do customers primarily find you?",
+        choices: ["Word of mouth", "Google search", "Social media", "Drive-by / signage", "Mix of channels"]
+      },
+      {
+        text: "Are you running any paid ads or promotions online?",
+        choices: ["None at all", "Tried it, stopped", "Running something basic", "Actively investing in ads"]
+      },
+      {
+        text: "Have you claimed and optimized your Google Business profile?",
+        choices: ["Not sure what that is", "Claimed but not updated", "Partially set up", "Fully optimized"]
+      }
+    ]
+  },
+  {
+    label: "Pain Points",
+    questions: [
+      {
+        text: "What's the biggest headache in how you communicate with customers right now?",
+        choices: ["No easy way to follow up", "Phone-only is slow", "Missed appointment reminders", "No system at all"]
+      },
+      {
+        text: "Are you losing potential customers because your online presence doesn't reflect your quality?",
+        choices: ["Definitely yes", "Probably, unsure", "Not a concern", "We look great online"]
+      },
+      {
+        text: "Do customers have a way to book appointments or request quotes online?",
+        choices: ["No — all calls/walk-ins", "Basic contact form only", "Partial booking system", "Yes, fully online"]
+      }
+    ]
+  },
+  {
+    label: "Growth Goals",
+    questions: [
+      {
+        text: "Are you looking to grow your customer base or retain existing customers?",
+        choices: ["Primarily acquire new", "Primarily retain existing", "Equal focus on both", "Not actively focused on either"]
+      },
+      {
+        text: "Is there a specific service you want to push more?",
+        choices: ["Tires / new sales", "Alignments & service", "Fleet / commercial work", "24 Hour Tire Repair", "Roadside Assistance", "All services equally"]
+      },
+      {
+        text: "Have you thought about building a loyalty or referral program?",
+        choices: ["Never considered it", "Thought about it, never done it", "Tried something informal", "Already have one"]
+      }
+    ]
+  },
+  {
+    label: "Decision-Making",
+    questions: [
+      {
+        text: "Who else is involved in decisions about marketing or tech investments?",
+        choices: ["Just me", "Me and a partner", "Family business — group decision", "Manager / staff input needed"]
+      },
+      {
+        text: "Do you have employees or outside vendors currently handling your marketing or tech?",
+        choices: ["No — we handle everything in-house", "We have an employee who manages it", "We use an outside vendor or agency", "Mix of staff and vendors", "Nothing is being managed right now"],
+        trigger: "vendor-reveal",
+        triggerOn: ["We have an employee who manages it", "We use an outside vendor or agency", "Mix of staff and vendors"]
+      },
+      {
+        text: "If you work with vendors or staff on marketing/tech — are those relationships active and working well?",
+        choices: ["Yes — happy with the current setup", "It's okay but could be better", "Not really — looking for alternatives", "We've recently parted ways with someone", "N/A — no one currently"],
+        conditional: "vendor-reveal"
+      },
+      {
+        text: "Have you worked with a web or marketing agency before?",
+        choices: ["Never", "Yes — bad experience", "Yes — okay experience", "Yes — great experience"],
+        conditional: "vendor-reveal"
+      },
+      {
+        text: "What would success look like 6 months after working with us?",
+        choices: ["More website traffic", "More calls / leads", "Better online reputation", "Streamlined customer process", "All of the above"]
+      }
+    ]
+  },
+  {
+    label: "Budget & Timing",
+    questions: [
+      {
+        text: "Is this something you're looking to move on soon?",
+        choices: ["Just exploring", "In the next few months", "Ready when it's right", "Urgent — need this now"]
+      },
+      {
+        text: "Do you have a rough budget in mind?",
+        choices: ["Not yet — need a proposal", "Under $1,000", "$1,000–$2,500", "$2,500–$5,000", "Open to the right investment"]
+      }
+    ]
+  }
+];
+
+const state = {};
+let totalQuestions = 0;
+
+function buildQuestionnaire() {
+  const container = document.getElementById('questionnaire');
+  let qIndex = 0;
+
+  sections.forEach((section, sIdx) => {
+    const sLabel = document.createElement('div');
+    sLabel.className = 'section-label';
+    sLabel.textContent = section.label;
+    container.appendChild(sLabel);
+
+    section.questions.forEach((q, qIdx) => {
+      qIndex++;
+      totalQuestions++;
+      const id = `q_${sIdx}_${qIdx}`;
+      state[id] = { choice: null, notes: '' };
+
+      const card = document.createElement('div');
+      card.className = 'q-card';
+      card.id = `card_${id}`;
+
+      card.innerHTML = `
+        <div class="q-number">Q${qIndex}</div>
+        <div class="q-text">${q.text}</div>
+        <div class="choices" id="choices_${id}">
+          ${q.choices.map(c => `
+            <button class="choice-btn" onclick="selectChoice('${id}', this)">
+              <span>${c}</span>
+            </button>
+          `).join('')}
+        </div>
+        <div class="notes-label">Additional Notes</div>
+        <textarea class="notes-input" placeholder="Add more detail here..." oninput="saveNotes('${id}', this.value)"></textarea>
+      `;
+
+      container.appendChild(card);
+    });
+  });
+
+  updateProgress();
+}
+
+function selectChoice(id, btn) {
+  const choicesEl = document.getElementById(`choices_${id}`);
+  choicesEl.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  state[id].choice = btn.querySelector('span').textContent;
+
+  const card = document.getElementById(`card_${id}`);
+  card.classList.add('answered');
+
+  updateProgress();
+}
+
+function saveNotes(id, value) {
+  state[id].notes = value;
+}
+
+// ── Service Breakdown ──────────────────────────────────────────
+function toggleServiceBreakdown(btn, show) {
+  const panel = document.getElementById('serviceBreakdownPanel');
+  const allBtns = btn.closest('.choices').querySelectorAll('.choice-btn');
+  allBtns.forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  panel.classList.toggle('revealed', show);
+}
+
+function toggleChip(btn) {
+  btn.classList.toggle('selected');
+  const card = btn.closest('.service-card');
+  if (card) markServiceCard(card.id);
+}
+
+function markServiceCard(cardId) {
+  const card = document.getElementById(cardId);
+  if (!card) return;
+  const hasChip = card.querySelector('.service-chip.selected');
+  const hasAvg  = card.querySelector('.service-avg-select')?.value;
+  card.classList.toggle('has-data', !!(hasChip || hasAvg));
+}
+
+function getServiceBreakdownData() {
+  const panel = document.getElementById('serviceBreakdownPanel');
+  if (!panel.classList.contains('revealed')) return null;
+
+  const services = {};
+  panel.querySelectorAll('.service-card').forEach(card => {
+    const chips = [...card.querySelectorAll('.service-chip.selected')]
+      .map(c => c.querySelector('span').textContent);
+    const avg = card.querySelector('.service-avg-select')?.value || '';
+    const name = card.querySelector('.service-name').textContent;
+    if (chips.length || avg) {
+      services[name] = { jobs: chips, avg };
+    }
+  });
+  return services;
+}
+
+function buildServiceBreakdownText(services) {
+  if (!services) return '';
+  let text = '\n\nSERVICE BREAKDOWN\n=================\n';
+  Object.entries(services).forEach(([name, data]) => {
+    text += `\n${name}\n`;
+    if (data.jobs.length) text += `  Job Types: ${data.jobs.join(', ')}\n`;
+    if (data.avg) text += `  Avg Per Visit: ${data.avg}\n`;
+  });
+  return text;
+}
+
+function updateProgress() {
+  const answered = Object.values(state).filter(v => v.choice !== null).length;
+  const pct = totalQuestions > 0 ? (answered / totalQuestions) * 100 : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${answered} of ${totalQuestions} answered`;
+}
+
+let extraContactCount = 0;
+
+function addContact() {
+  extraContactCount++;
+  const idx = extraContactCount;
+  const list = document.getElementById('extra-contacts-list');
+
+  const div = document.createElement('div');
+  div.className = 'extra-contact';
+  div.id = `extra-contact-${idx}`;
+  div.innerHTML = `
+    <div class="extra-contact-header">
+      <span class="extra-contact-title">Additional Contact ${idx}</span>
+      <button class="remove-contact-btn" onclick="removeContact(${idx})" title="Remove">&#x2715;</button>
+    </div>
+    <div class="contact-grid">
+      <div class="field-group">
+        <label class="field-label">Full Name <span class="req">*</span></label>
+        <input class="field-input" id="cf_xname_${idx}" type="text" placeholder="First and last name">
+        <span class="field-error" id="err_xname_${idx}">Please enter a contact name.</span>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Role / Title <span class="req">*</span></label>
+        <input class="field-input" id="cf_xrole_${idx}" type="text" placeholder="e.g. Sales, Tech Lead">
+        <span class="field-error" id="err_xrole_${idx}">Please enter a role or title.</span>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Direct Phone <span class="req">*</span></label>
+        <input class="field-input" id="cf_xphone_${idx}" type="tel" placeholder="(555) 000-0000">
+        <span class="field-error" id="err_xphone_${idx}">Please enter a phone number.</span>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Direct Email <span class="req">*</span></label>
+        <input class="field-input" id="cf_xemail_${idx}" type="email" placeholder="direct@yourbusiness.com">
+        <span class="field-error" id="err_xemail_${idx}">Please enter a valid email.</span>
+      </div>
+    </div>
+  `;
+
+  list.appendChild(div);
+}
+
+function removeContact(idx) {
+  const el = document.getElementById(`extra-contact-${idx}`);
+  if (el) {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(-8px)';
+    el.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+    setTimeout(() => el.remove(), 200);
+  }
+}
+
+function getContactData() {
+  const extras = [];
+  document.querySelectorAll('[id^="extra-contact-"]').forEach(el => {
+    const idx   = el.id.split('-').pop();
+    const name  = (document.getElementById(`cf_xname_${idx}`)  || {}).value?.trim() || '';
+    const role  = (document.getElementById(`cf_xrole_${idx}`)  || {}).value?.trim() || '';
+    const phone = (document.getElementById(`cf_xphone_${idx}`) || {}).value?.trim() || '';
+    const email = (document.getElementById(`cf_xemail_${idx}`) || {}).value?.trim() || '';
+    if (name || role || phone || email) extras.push({ name, role, phone, email, idx });
+  });
+
+  return {
+    business:      document.getElementById('cf_business').value.trim(),
+    phone:         document.getElementById('cf_phone').value.trim(),
+    email:         document.getElementById('cf_email').value.trim(),
+    address:       document.getElementById('cf_address').value.trim(),
+    website:       document.getElementById('cf_website').value.trim(),
+    name:          document.getElementById('cf_name').value.trim(),
+    role:          document.getElementById('cf_role').value.trim(),
+    contactPhone:  document.getElementById('cf_contact_phone').value.trim(),
+    contactEmail:  document.getElementById('cf_contact_email').value.trim(),
+    name2:         document.getElementById('cf_name2').value.trim(),
+    role2:         document.getElementById('cf_role2').value.trim(),
+    contactPhone2: document.getElementById('cf_contact_phone2').value.trim(),
+    contactEmail2: document.getElementById('cf_contact_email2').value.trim(),
+    extras,
+    optin: document.getElementById('cf_optin').checked
+  };
+}
+
+function validateContact() {
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  let valid = true;
+
+  function check(inputId, errId, testFn) {
+    const input = document.getElementById(inputId);
+    const err   = document.getElementById(errId);
+    if (!input) return;
+    const bad = !testFn(input.value.trim());
+    input.classList.toggle('error', bad);
+    if (err) err.classList.toggle('visible', bad);
+    if (bad) valid = false;
+  }
+
+  // Business basics
+  check('cf_business', 'err_business', v => !!v);
+  check('cf_email',    'err_email',    v => emailRe.test(v));
+
+  // Primary contact — all required
+  check('cf_name',          'err_name',          v => !!v);
+  check('cf_role',          'err_role',          v => !!v);
+  check('cf_contact_phone', 'err_contact_phone', v => !!v);
+  check('cf_contact_email', 'err_contact_email', v => emailRe.test(v));
+
+  // Secondary contact — all required only if any field is filled
+  const s2filled = ['cf_name2','cf_role2','cf_contact_phone2','cf_contact_email2']
+    .some(id => document.getElementById(id)?.value.trim());
+  if (s2filled) {
+    check('cf_name2',          'err_name2',          v => !!v);
+    check('cf_role2',          'err_role2',          v => !!v);
+    check('cf_contact_phone2', 'err_contact_phone2', v => !!v);
+    check('cf_contact_email2', 'err_contact_email2', v => emailRe.test(v));
+  }
+
+  // Additional contacts — all fields required for each card
+  document.querySelectorAll('[id^="extra-contact-"]').forEach(el => {
+    const idx = el.id.split('-').pop();
+    check(`cf_xname_${idx}`,  `err_xname_${idx}`,  v => !!v);
+    check(`cf_xrole_${idx}`,  `err_xrole_${idx}`,  v => !!v);
+    check(`cf_xphone_${idx}`, `err_xphone_${idx}`, v => !!v);
+    check(`cf_xemail_${idx}`, `err_xemail_${idx}`, v => emailRe.test(v));
+  });
+
+  return valid;
+}
+
+function buildContactSummaryHTML(c) {
+  const contactRows = (name, role, phone, email, label) => name ? `
+    <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:4px; padding:12px 14px; margin-bottom:8px;">
+      <div style="font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;">${label}</div>
+      <div style="font-size:14px; color:var(--text); font-weight:500;">${name}${role ? ' <span style="color:var(--muted);font-weight:300;">— ' + role + '</span>' : ''}</div>
+      ${phone ? `<div style="font-size:12px; color:var(--text); opacity:0.7; margin-top:3px;">${phone}</div>` : ''}
+      ${email ? `<div style="font-size:12px; color:var(--accent); margin-top:2px;">${email}</div>` : ''}
+    </div>` : '';
+
+  let html = `
+    <div style="margin-bottom:24px; padding-bottom:20px; border-bottom:1px solid var(--border);">
+      <div style="font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:12px;">Contact Information</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px 24px; margin-bottom:16px;">
+        ${c.business ? `<div><div style="font-size:11px;color:var(--muted);">Business</div><div style="font-size:14px;color:var(--text);">${c.business}</div></div>` : ''}
+        ${c.phone    ? `<div><div style="font-size:11px;color:var(--muted);">Phone</div><div style="font-size:14px;color:var(--text);">${c.phone}</div></div>` : ''}
+        ${c.email    ? `<div style="grid-column:1/-1;"><div style="font-size:11px;color:var(--muted);">Business Email</div><div style="font-size:14px;color:var(--accent);">${c.email}</div></div>` : ''}
+        ${c.address  ? `<div style="grid-column:1/-1;"><div style="font-size:11px;color:var(--muted);">Location</div><div style="font-size:14px;color:var(--text);">${c.address}</div></div>` : ''}
+        ${c.website  ? `<div style="grid-column:1/-1;"><div style="font-size:11px;color:var(--muted);">Website</div><div style="font-size:14px;color:var(--text);">${c.website}</div></div>` : ''}
+      </div>
+      ${contactRows(c.name,  c.role,  c.contactPhone,  c.contactEmail,  'Primary Contact')}
+      ${contactRows(c.name2, c.role2, c.contactPhone2, c.contactEmail2, 'Secondary Contact')}
+      ${c.extras.map((x, i) => contactRows(x.name, x.role, x.phone, x.email, `Additional Contact ${i + 1}`)).join('')}
+      <div style="margin-top:12px; font-size:12px; color:${c.optin ? 'var(--success)' : 'var(--muted)'};">
+        ${c.optin ? '&#x2713; Opted into MUSO VENTURES contact list' : '&#x2014; Did not opt into contact list'}
+      </div>
+    </div>
+  `;
+  return html;
+}
+
+function buildEmailBody(c) {
+  let body = 'GUERRERO TIRES — DISCOVERY RESPONSES\n';
+  body += '=====================================\n\n';
+  body += 'CONTACT INFORMATION\n-------------------\n';
+  if (c.business) body += `Business:  ${c.business}\n`;
+  if (c.phone)    body += `Phone:     ${c.phone}\n`;
+  if (c.email)    body += `Biz Email: ${c.email}\n`;
+  if (c.address)  body += `Location:  ${c.address}\n`;
+  if (c.website)  body += `Website:   ${c.website}\n`;
+  if (c.name) {
+    body += `\nPrimary Contact\n  Name:  ${c.name}${c.role ? ' — ' + c.role : ''}\n`;
+    if (c.contactPhone) body += `  Phone: ${c.contactPhone}\n`;
+    if (c.contactEmail) body += `  Email: ${c.contactEmail}\n`;
+  }
+  if (c.name2) {
+    body += `\nSecondary Contact\n  Name:  ${c.name2}${c.role2 ? ' — ' + c.role2 : ''}\n`;
+    if (c.contactPhone2) body += `  Phone: ${c.contactPhone2}\n`;
+    if (c.contactEmail2) body += `  Email: ${c.contactEmail2}\n`;
+  }
+  c.extras.forEach((x, i) => {
+    body += `\nAdditional Contact ${i + 1}\n  Name:  ${x.name}${x.role ? ' — ' + x.role : ''}\n`;
+    if (x.phone) body += `  Phone: ${x.phone}\n`;
+    if (x.email) body += `  Email: ${x.email}\n`;
+  });
+  body += `\nOpt-in: ${c.optin ? 'Yes' : 'No'}\n`;
+
+  let qIndex = 0;
+  sections.forEach((section, sIdx) => {
+    body += `\n\n${section.label.toUpperCase()}\n${'='.repeat(section.label.length)}\n`;
+    section.questions.forEach((q, qIdx) => {
+      qIndex++;
+      const id = `q_${sIdx}_${qIdx}`;
+      const entry = state[id];
+      body += `\nQ${qIndex}: ${q.text}\nAnswer: ${entry.choice || 'Not answered'}\n`;
+      if (entry.notes) body += `Notes: ${entry.notes}\n`;
+    });
+  });
+
+  const services = getServiceBreakdownData();
+  if (services) body += buildServiceBreakdownText(services);
+
+  return body;
+}
+
+function submitForm() {
+  if (!validateContact()) {
+    document.getElementById('contactForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+
+  const summaryPanel = document.getElementById('summaryPanel');
+  const summaryContent = document.getElementById('summaryContent');
+  summaryContent.innerHTML = '';
+
+  const c = getContactData();
+
+  // Build summary panel
+  const contactBlock = document.createElement('div');
+  contactBlock.innerHTML = buildContactSummaryHTML(c);
+  summaryContent.appendChild(contactBlock);
+
+  let qIndex = 0;
+  sections.forEach((section, sIdx) => {
+    section.questions.forEach((q, qIdx) => {
+      qIndex++;
+      const id = `q_${sIdx}_${qIdx}`;
+      const entry = state[id];
+      const item = document.createElement('div');
+      item.className = 'summary-item';
+      item.innerHTML = `
+        <div class="summary-q">Q${qIndex} — ${q.text}</div>
+        <div class="summary-choice">${entry.choice || '— Not answered'}</div>
+        ${entry.notes ? `<div class="summary-notes">${entry.notes}</div>` : ''}
+      `;
+      summaryContent.appendChild(item);
+    });
+  });
+
+  summaryPanel.classList.add('visible');
+  summaryPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Service breakdown in summary
+  const services = getServiceBreakdownData();
+  if (services && Object.keys(services).length > 0) {
+    const svcBlock = document.createElement('div');
+    svcBlock.style.cssText = 'margin-top:24px; padding-top:20px; border-top:1px solid var(--border);';
+    let svcHTML = `<div style="font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:14px;">Service Breakdown</div>`;
+    Object.entries(services).forEach(([name, data]) => {
+      svcHTML += `
+        <div style="background:var(--surface); border:1px solid rgba(245,166,35,0.25); border-radius:4px; padding:14px 16px; margin-bottom:10px;">
+          <div style="font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--accent2); margin-bottom:8px;">${name}</div>
+          ${data.jobs.length ? `<div style="font-size:12px; color:var(--muted); margin-bottom:4px;">Jobs: <span style="color:var(--text);">${data.jobs.join(', ')}</span></div>` : ''}
+          ${data.avg ? `<div style="font-size:12px; color:var(--muted);">Avg Per Visit: <span style="color:var(--success); font-weight:500;">${data.avg}</span></div>` : ''}
+        </div>`;
+    });
+    svcBlock.innerHTML = svcHTML;
+    summaryContent.appendChild(svcBlock);
+  }
+
+  // Fire mailto
+  const subject = `Discovery: ${c.business || 'New Client'} — MUSO VENTURES`;
+  const body = buildEmailBody(c);
+  const mailto = `mailto:smusseau.ventures@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailto;
+}
+
+function resetForm() {
+  Object.keys(state).forEach(id => {
+    state[id] = { choice: null, notes: '' };
+  });
+
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.notes-input').forEach(t => t.value = '');
+  document.querySelectorAll('.q-card').forEach(c => c.classList.remove('answered'));
+  document.getElementById('summaryPanel').classList.remove('visible');
+
+  // Clear core contact fields
+  ['cf_business','cf_phone','cf_email','cf_address','cf_website',
+   'cf_name','cf_role','cf_contact_phone','cf_contact_email',
+   'cf_name2','cf_role2','cf_contact_phone2','cf_contact_email2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.value = ''; el.classList.remove('error'); }
+  });
+  ['err_business','err_email',
+   'err_name','err_role','err_contact_phone','err_contact_email',
+   'err_name2','err_role2','err_contact_phone2','err_contact_email2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('visible');
+  });
+  document.getElementById('cf_optin').checked = true;
+
+  // Remove all extra contacts
+  document.getElementById('extra-contacts-list').innerHTML = '';
+  extraContactCount = 0;
+
+  // Reset service breakdown
+  const sbPanel = document.getElementById('serviceBreakdownPanel');
+  sbPanel.classList.remove('revealed');
+  document.querySelectorAll('.service-chip').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.service-avg-select').forEach(s => s.value = '');
+  document.querySelectorAll('.service-card').forEach(c => c.classList.remove('has-data'));
+  document.querySelector('.service-breakdown-gate .choices')
+    ?.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function copyToClipboard() {
+  const c = getContactData();
+  let text = 'GUERRERO TIRES — DISCOVERY RESPONSES\n';
+  text += '=====================================\n\n';
+  text += 'CONTACT INFORMATION\n';
+  text += '-------------------\n';
+  if (c.business) text += `Business:  ${c.business}\n`;
+  if (c.phone)    text += `Phone:     ${c.phone}\n`;
+  if (c.email)    text += `Biz Email: ${c.email}\n`;
+  if (c.address)  text += `Location:  ${c.address}\n`;
+  if (c.website)  text += `Website:   ${c.website}\n`;
+
+  if (c.name) {
+    text += `\nPrimary Contact\n`;
+    text += `  Name:  ${c.name}${c.role ? ' — ' + c.role : ''}\n`;
+    if (c.contactPhone) text += `  Phone: ${c.contactPhone}\n`;
+    if (c.contactEmail) text += `  Email: ${c.contactEmail}\n`;
+  }
+  if (c.name2) {
+    text += `\nSecondary Contact\n`;
+    text += `  Name:  ${c.name2}${c.role2 ? ' — ' + c.role2 : ''}\n`;
+    if (c.contactPhone2) text += `  Phone: ${c.contactPhone2}\n`;
+    if (c.contactEmail2) text += `  Email: ${c.contactEmail2}\n`;
+  }
+  c.extras.forEach((x, i) => {
+    text += `\nAdditional Contact ${i + 1}\n`;
+    text += `  Name:  ${x.name}${x.role ? ' — ' + x.role : ''}\n`;
+    if (x.phone) text += `  Phone: ${x.phone}\n`;
+    if (x.email) text += `  Email: ${x.email}\n`;
+  });
+
+  text += `\nOpt-in: ${c.optin ? 'Yes — added to MUSO VENTURES list' : 'No'}\n`;
+
+  let qIndex = 0;
+  sections.forEach((section, sIdx) => {
+    text += `\n\n${section.label.toUpperCase()}\n${'—'.repeat(section.label.length)}\n`;
+    section.questions.forEach((q, qIdx) => {
+      qIndex++;
+      const id = `q_${sIdx}_${qIdx}`;
+      const entry = state[id];
+      text += `\nQ${qIndex}: ${q.text}\n`;
+      text += `Answer: ${entry.choice || 'Not answered'}\n`;
+      if (entry.notes) text += `Notes: ${entry.notes}\n`;
+    });
+  });
+
+  const services = getServiceBreakdownData();
+  if (services) text += buildServiceBreakdownText(services);
+
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy Summary', 2000);
+  });
+}
+
+function exportPDF() {
+  // Set print date
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  const el = document.getElementById('printDate');
+  if (el) el.textContent = `Submitted: ${dateStr}`;
+
+  // Show print-only header
+  document.getElementById('printHeader').style.display = 'block';
+
+  // Build a clean print-version of service breakdown if filled
+  const services = getServiceBreakdownData();
+  const pss = document.getElementById('printServiceSection');
+  if (services && Object.keys(services).length > 0) {
+    pss.style.display = 'block';
+    let html = `<div style="margin-top:20px; padding-top:16px; border-top:1px solid #ddd;">
+      <div style="font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:#888; margin-bottom:12px;">Service Breakdown</div>`;
+    Object.entries(services).forEach(([name, data]) => {
+      html += `<div style="margin-bottom:10px; padding:10px 12px; border:1px solid #e0e0e0; border-radius:3px;">
+        <div style="font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:0.05em; color:#1a1a1a; margin-bottom:4px;">${name}</div>
+        ${data.jobs.length ? `<div style="font-size:11px; color:#555;">Jobs: ${data.jobs.join(', ')}</div>` : ''}
+        ${data.avg ? `<div style="font-size:11px; color:#c0392b; margin-top:2px;">Avg per visit: ${data.avg}</div>` : ''}
+      </div>`;
+    });
+    html += '</div>';
+    pss.innerHTML = html;
+  } else {
+    pss.style.display = 'none';
+  }
+
+  // Trigger print dialog (Save as PDF in Safari)
+  setTimeout(() => {
+    window.print();
+    // Hide print-only elements again after dialog closes
+    setTimeout(() => {
+      document.getElementById('printHeader').style.display = 'none';
+      pss.style.display = 'none';
+    }, 1000);
+  }, 150);
+}
+
+buildQuestionnaire();
+</script>
+</body>
+</html>
